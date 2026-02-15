@@ -1,0 +1,28 @@
+{
+  "name": "@csv-matchy/theme-bootstrap",
+  "version": "1.0.0",
+  "description": "Bootstrap styled table for csv-matchy",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "csv",
+    "validator",
+    "bootstrap"
+  ],
+  "author": "csv-matchy",
+  "license": "ISC",
+  "peerDependencies": {
+    "bootstrap": "^5.0.0"
+  },
+  "dependencies": {
+    "@csv-matchy/vanilla": "workspace:*"
+  }
+}
