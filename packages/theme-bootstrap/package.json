@@ -20,9 +20,8 @@
   "author": "csv-matchy",
   "license": "ISC",
   "peerDependencies": {
+    "@csv-matchy/core": "^1.0.0",
+    "@csv-matchy/vanilla": "^1.0.0",
     "bootstrap": "^5.0.0"
-  },
-  "dependencies": {
-    "@csv-matchy/vanilla": "workspace:*"
   }
 }

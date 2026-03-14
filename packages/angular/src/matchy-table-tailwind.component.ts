@@ -8,10 +8,13 @@ import {
   QueryList,
   ElementRef,
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { InvalidCell, CellChangeEvent } from './matchy-table.component';
 
 @Component({
   selector: 'csv-matchy-table-tailwind',
+  standalone: true,
+  imports: [CommonModule],
   template: `
     <div class="overflow-x-auto">
       <table [class]="tableClass">

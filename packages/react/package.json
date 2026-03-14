@@ -21,7 +21,7 @@
   "license": "ISC",
   "peerDependencies": {
     "react": "^18.0.0",
-    "@csv-matchy/core": "*"
+    "@csv-matchy/core": "^1.0.0"
   },
   "dependencies": {},
   "devDependencies": {

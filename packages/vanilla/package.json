@@ -19,8 +19,8 @@
   ],
   "author": "csv-matchy",
   "license": "ISC",
-  "dependencies": {
-    "@csv-matchy/core": "workspace:*"
+  "peerDependencies": {
+    "@csv-matchy/core": "^1.0.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",

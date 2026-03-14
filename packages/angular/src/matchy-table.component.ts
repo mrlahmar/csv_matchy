@@ -8,6 +8,7 @@ import {
   QueryList,
   ElementRef,
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 export interface InvalidCell {
   row: number;
@@ -24,6 +25,8 @@ export interface CellChangeEvent {
 
 @Component({
   selector: 'csv-matchy-table',
+  standalone: true,
+  imports: [CommonModule],
   template: `
     <table [class]="tableClass">
       <thead>
