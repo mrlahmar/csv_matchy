@@ -20,10 +20,9 @@
   "author": "csv-matchy",
   "license": "ISC",
   "peerDependencies": {
-    "@angular/core": "^16.0.0"
-  },
-  "dependencies": {
-    "@csv-matchy/core": "workspace:*"
+    "@angular/core": "^16.0.0",
+    "@angular/common": "^16.0.0",
+    "@csv-matchy/core": "^1.0.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",

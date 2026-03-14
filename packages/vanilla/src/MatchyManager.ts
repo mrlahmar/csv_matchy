@@ -51,6 +51,58 @@ export class MatchyManager {
     return this.results;
   }
 
+  editCell(rowIndex: number, field: string, newValue: string): void {
+    if (rowIndex < 0 || rowIndex >= this.data.length) return;
+    this.data[rowIndex] = { ...this.data[rowIndex], [field]: newValue };
+    this.emit('cell-updated', { rowIndex, field, newValue });
+  }
+
+  revalidateRow(rowIndex: number): void {
+    if (rowIndex < 0 || rowIndex >= this.data.length) return;
+
+    const rowValidator = new RowValidator(this.validationRules);
+    const rowResult = rowValidator.validate(this.data[rowIndex], rowIndex);
+
+    if (this.results) {
+      this.results.results[rowIndex] = rowResult;
+      const otherCells = this.results.invalidCells.filter(c => c.row !== rowIndex);
+      this.results.invalidCells = [...otherCells, ...rowResult.invalidCells];
+      this.results.isValid = this.results.invalidCells.length === 0;
+    } else {
+      this.results = {
+        results: [rowResult],
+        invalidCells: rowResult.invalidCells,
+        isValid: rowResult.invalidCells.length === 0,
+      };
+    }
+
+    this.emit('validation-complete', this.results);
+  }
+
+  updateAndRevalidate(rowIndex: number, field: string, newValue: string): void {
+    this.editCell(rowIndex, field, newValue);
+    this.revalidateRow(rowIndex);
+  }
+
+  exportCSV(): string {
+    if (this.data.length === 0) return '';
+    const headers = Object.keys(this.data[0]);
+
+    const escape = (val: string) => {
+      if (val.includes(',') || val.includes('"') || val.includes('\n')) {
+        return `"${val.replace(/"/g, '""')}"`;
+      }
+      return val;
+    };
+
+    const lines = [
+      headers.map(escape).join(','),
+      ...this.data.map(row => headers.map(h => escape(row[h] ?? '')).join(',')),
+    ];
+
+    return lines.join('\n');
+  }
+
   getResults(): ValidationResults | null {
     return this.results;
   }

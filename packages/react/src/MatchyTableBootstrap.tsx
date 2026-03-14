@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export interface MatchyTableBootstrapProps {
   data: Record<string, string>[];
@@ -9,6 +9,10 @@ export interface MatchyTableBootstrapProps {
   hover?: boolean;
   bordered?: boolean;
   condensed?: boolean;
+  /** Enable inline cell editing */
+  editable?: boolean;
+  /** Called after a cell value is committed */
+  onCellChange?: (rowIndex: number, field: string, newValue: string) => void;
 }
 
 export function MatchyTableBootstrap({
@@ -20,13 +24,22 @@ export function MatchyTableBootstrap({
   hover = true,
   bordered = false,
   condensed = false,
+  editable = false,
+  onCellChange,
 }: MatchyTableBootstrapProps) {
+  const [editingCell, setEditingCell] = useState<{ row: number; col: number } | null>(null);
+
   const isInvalid = (rowIndex: number, colIndex: number) =>
     invalidCells.some(cell => cell.row === rowIndex && cell.col === colIndex);
 
   const getErrors = (rowIndex: number, colIndex: number): string[] => {
     const cell = invalidCells.find(cell => cell.row === rowIndex && cell.col === colIndex);
     return cell?.errors.map(e => e.message) || [];
+  };
+
+  const commit = (rowIdx: number, field: string, value: string) => {
+    setEditingCell(null);
+    onCellChange?.(rowIdx, field, value);
   };
 
   const tableClasses = [
@@ -53,13 +66,31 @@ export function MatchyTableBootstrap({
               {headers.map((h, colIdx) => {
                 const errors = getErrors(rowIdx, colIdx);
                 const hasError = isInvalid(rowIdx, colIdx);
+                const isEditing = editable && editingCell?.row === rowIdx && editingCell?.col === colIdx;
                 return (
                   <td
                     key={colIdx}
                     className={hasError ? 'table-danger' : ''}
-                    title={errors.join('\n')}
+                    title={isEditing ? undefined : errors.join('\n')}
+                    style={editable ? { cursor: 'pointer' } : undefined}
+                    onClick={() => {
+                      if (editable && !isEditing) setEditingCell({ row: rowIdx, col: colIdx });
+                    }}
                   >
-                    {row[h]}
+                    {isEditing ? (
+                      <input
+                        autoFocus
+                        defaultValue={row[h]}
+                        className="form-control form-control-sm p-0 border-0 bg-transparent"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') commit(rowIdx, h, e.currentTarget.value);
+                          if (e.key === 'Escape') setEditingCell(null);
+                        }}
+                        onBlur={(e) => commit(rowIdx, h, e.currentTarget.value)}
+                      />
+                    ) : (
+                      row[h]
+                    )}
                   </td>
                 );
               })}
