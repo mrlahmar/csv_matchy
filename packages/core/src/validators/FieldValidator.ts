@@ -31,7 +31,7 @@ export class FieldValidator {
       const isValid = this.isValidFloat(value);
       return isValid ? { valid: true, message: "" } : { valid: false, message: "It's not a valid float" };
     } else if (type === FieldType.bool) {
-      const isValid = value in ["Yes", "No"];
+      const isValid = ["Yes", "No"].includes(value);
       return isValid ? { valid: true, message: "" } : { valid: false, message: "Possible values are 'Yes' or 'No'" };
     }
     return { valid: true, message: "" };
@@ -75,11 +75,11 @@ export class FieldValidator {
 
   isValidInteger(value: string): boolean {
     const intValue = parseInt(value, 10);
-    return !isNaN(intValue) && value.trim() === intValue.toString();
+    return !isNaN(intValue) && value === intValue.toString();
   }
 
   isValidFloat(value: string): boolean {
-    return !isNaN(parseFloat(value));
+    return !isNaN(Number(value)) && value.trim() !== '';
   }
 
   checkConstraint(value: string, condition: Condition): boolean {

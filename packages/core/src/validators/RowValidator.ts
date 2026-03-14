@@ -45,6 +45,18 @@ export class RowValidator {
       colIndex++;
     }
 
+    for (const [field, option] of this.rules.entries()) {
+      if (!(field in row) && option.mandatory) {
+        isValid = false;
+        invalidCells.push({
+          row: rowIndex,
+          col: -1,
+          field,
+          errors: [{ field, message: 'Mandatory field missing' }]
+        });
+      }
+    }
+
     return {
       isValid,
       rowIndex,
