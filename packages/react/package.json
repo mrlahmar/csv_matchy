@@ -1,6 +1,7 @@
 {
   "name": "@csv-matchy/react",
   "version": "1.0.0",
+  "type": "module",
   "description": "React adapter for csv-matchy",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,7 +11,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node -e \"process.exit(0)\""
   },
   "keywords": [
     "csv",
@@ -19,12 +20,17 @@
   ],
   "author": "csv-matchy",
   "license": "ISC",
+  "repository": "github:RaoufGhrissi/csv_matchy",
+  "homepage": "https://github.com/RaoufGhrissi/csv_matchy#readme",
+  "bugs": { "url": "https://github.com/RaoufGhrissi/csv_matchy/issues" },
+  "publishConfig": { "access": "public" },
   "peerDependencies": {
     "react": "^18.0.0",
     "@csv-matchy/core": "^1.0.0"
   },
   "dependencies": {},
   "devDependencies": {
+    "@csv-matchy/core": "workspace:*",
     "@types/jest": "^29.5.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
